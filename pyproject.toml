@@ -1,0 +1,15 @@
+[project]
+name = "fake-openai-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115.8",
+    "fugashi>=1.4.0",
+    "pydantic>=2.10.6",
+    "sentence-transformers>=3.4.1",
+    "sentencepiece>=0.2.0",
+    "unidic-lite>=1.0.8",
+    "uvicorn>=0.34.0",
+]
