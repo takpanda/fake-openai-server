@@ -12,16 +12,42 @@ OpenAI-API-compatibleモデルプロバイダーでこれを指定します。
 - Rerank: [cl-nagoya/ruri-reranker-large](https://huggingface.co/cl-nagoya/ruri-reranker-large)
 
 ## 必要なもの
+
 - [sentence-transformers](https://sbert.net/)が利用できる環境
   - Text embeddings: GPU VRAM1.5GB程度
   - Rerank: GPU VRAM1.5GB程度
 
-## ライブラリのインストール
+
+## Docker Composeで実行する場合
+
+buildしてupするだけです。
+
+```sh
+$ docker compose build
+$ docker compose up -d
+```
+モデルのキャッシュはホストの`volumes`ディレクトリに保持されます。
+
+
+## Dockerなしで実行したい場合
+### パッケージのインストール
+
+```sh
+$ sudo apt install \
+       build-essential \
+       cmake pkg-config \
+       libprotobuf-dev \
+       libsentencepiece-dev
+```
+
+
+### Pythonライブラリのインストール
 ライブラリの管理は[uv](https://github.com/astral-sh/uv)を用います。
 
 ```sh
 $ uv sync
 ```
+
 
 ## つかいかた(Text embeddings)
 
@@ -31,7 +57,11 @@ $ uv sync
 $ uv run uvicorn embeddings-api-server:app --host 0.0.0.0 --port 8081
 ```
 
+Docker Composeの場合は不要です。
+
+
 ### Text embeddingサーバーの動作テスト
+
 ```sh
 $ curl -v http://127.0.0.1:8081/v1/embeddings -H 'Content-Type: application/json' --data-raw '
 {
@@ -82,21 +112,29 @@ $ curl -v http://127.0.0.1:8081/v1/embeddings -H 'Content-Type: application/json
 }
 ```
 
+
 ### Difyでの設定
+
 - Model Type: Text Embedding
 - Model Name: cl-nagoya/ruri-large
 - API Key: なし
 - API endpoint URL: http://サーバーのホスト名・IPアドレス:8081/v1
 - Model context size: 512
 
+
 ## つかいかた(Rerank)
 
 ### Rerankサーバーの起動
+
 ```sh
 $ uv run uvicorn rerank-api-server:app --host 0.0.0.0 --port 8082
 ```
 
+Docker Composeの場合は不要です。
+
+
 ### Rerankサーバーの動作テスト
+
 ```sh
 $ curl -v http://127.0.0.1:8082/v1/rerank -H 'Content-Type: application/json' --data-raw '
 {
@@ -142,7 +180,9 @@ $ curl -v http://127.0.0.1:8082/v1/rerank -H 'Content-Type: application/json' --
 }
 ```
 
+
 ### Difyでの設定
+
 - Model Type: Rerank
 - Model Name: cl-nagoya/ruri-reranker-large
 - API Key: なし
