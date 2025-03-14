@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List
 from sentence_transformers import CrossEncoder
 import logging
+import logging.config
 from logging import Logger
 from LoggerConfig import LoggerConfig
 

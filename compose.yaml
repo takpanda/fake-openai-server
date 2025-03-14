@@ -1,0 +1,55 @@
+services:
+  base-server:
+    build:
+      context: .
+      dockerfile: ./Docker/base-server/Dockerfile
+    image: fake-openai-server/base-server:latest
+    networks:
+      - fos-net
+
+  embeddings-server:
+    build:
+      context: .
+      dockerfile: ./Docker/embeddings-server/Dockerfile
+    image: fake-openai-server/embeddings-server:latest
+    ports:
+      - 8081:8081/tcp
+    volumes:
+      - ./volumes/hf-cache:/root/.cache
+    networks:
+      - fos-net
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 10s
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+
+  reranker-server:
+    build:
+      context: .
+      dockerfile: ./Docker/reranker-server/Dockerfile
+    image: fake-openai-server/reranker-server:latest
+    ports:
+      - 8082:8082/tcp
+    volumes:
+      - ./volumes/hf-cache:/root/.cache
+    networks:
+      - fos-net
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 10s
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+
+networks:
+  fos-net:

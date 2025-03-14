@@ -4,6 +4,7 @@ from typing import Union
 from sentence_transformers import SentenceTransformer
 
 import logging
+import logging.config
 from logging import Logger
 from LoggerConfig import LoggerConfig
 
