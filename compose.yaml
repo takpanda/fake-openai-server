@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: ./Docker/base-server/Dockerfile
     image: fake-openai-server/base-server:latest
+    volumes:
+      - ./volumes/hf-cache:/opt/fos/.cache/huggingface
     networks:
       - fos-net
 
@@ -15,9 +17,12 @@ services:
     ports:
       - 8081:8081/tcp
     volumes:
-      - ./volumes/hf-cache:/root/.cache
+      - ./volumes/hf-cache:/opt/fos/.cache/huggingface
     networks:
       - fos-net
+    depends_on:
+      base-server:
+        condition: service_completed_successfully
     deploy:
       restart_policy:
         condition: any
@@ -37,9 +42,12 @@ services:
     ports:
       - 8082:8082/tcp
     volumes:
-      - ./volumes/hf-cache:/root/.cache
+      - ./volumes/hf-cache:/opt/fos/.cache/huggingface
     networks:
       - fos-net
+    depends_on:
+      base-server:
+        condition: service_completed_successfully
     deploy:
       restart_policy:
         condition: any

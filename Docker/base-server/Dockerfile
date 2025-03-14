@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.8.0-cudnn-runtime-ubuntu24.04 AS builder
+FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04 AS builder
 
 ARG FOS_USER_ID=fos
 ARG FOS_USER_DIR=/opt/fos
@@ -60,21 +60,27 @@ RUN useradd -u 1001 -s /bin/bash -d ${FOS_USER_DIR} ${FOS_USER_ID} && \
 WORKDIR ${FOS_USER_DIR}
 USER ${FOS_USER_ID}
 
-COPY --from=builder \
+COPY --from=builder --chown=${FOS_USER_ID}:${FOS_USER_ID} \
     ${FOS_USER_DIR}/.local \
     ${FOS_USER_DIR}/.local
 
-COPY --from=builder \
+COPY --from=builder --chown=${FOS_USER_ID}:${FOS_USER_ID} \
     ${FOS_USER_DIR}/.venv \
     ${FOS_USER_DIR}/.venv
 
-COPY --from=builder \
+COPY --from=builder --chown=${FOS_USER_ID}:${FOS_USER_ID} \
     ${FOS_USER_DIR}/.config \
     ${FOS_USER_DIR}/.config
 
-COPY --chown=${FOS_USER_ID}:${FOS_USER_ID} \
-    ./pyproject.toml \
-    ./uv.lock \
-    ./.python-version \
+COPY --from=builder --chown=${FOS_USER_ID}:${FOS_USER_ID} \
+    ${FOS_USER_DIR}/pyproject.toml \
+    ${FOS_USER_DIR}/uv.lock \
+    ${FOS_USER_DIR}/.python-version \
     ${FOS_USER_DIR}/
 
+COPY --chmod=755 ./Docker/base-server/setup.sh /opt/setup.sh
+
+RUN mkdir -p ${FOS_USER_DIR}/.cache
+
+USER root
+CMD ["/opt/setup.sh"]
