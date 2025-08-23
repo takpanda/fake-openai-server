@@ -50,7 +50,7 @@ ENV PATH=${FOS_USER_DIR}/.cargo/bin:${FOS_USER_DIR}/.local/bin:${PATH}
 RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/var/cache/apt/archives,sharing=locked \
     apt-get update \
-    && apt-get install -y libsentencepiece0 libprotobuf-c1
+    && apt-get install -y libsentencepiece0 libprotobuf32 libprotobuf-c1
 
 
 RUN useradd -u 1001 -s /bin/bash -d ${FOS_USER_DIR} ${FOS_USER_ID} && \

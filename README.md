@@ -7,7 +7,7 @@ OpenAI-API-compatibleモデルプロバイダーでこれを指定します。
 
 モデルとしては、次のものを利用しています。
 
-- Rerank: [cl-nagoya/ruri-reranker-large](https://huggingface.co/cl-nagoya/ruri-reranker-large)
+- Rerank: [cl-nagoya/ruri-v3-reranker-310m](https://huggingface.co/cl-nagoya/ruri-v3-reranker-310m)
 
 ## 必要なもの
 
@@ -62,7 +62,7 @@ Docker Composeの場合は不要です。
 ```sh
 $ curl -v http://127.0.0.1:8082/v1/rerank -H 'Content-Type: application/json' --data-raw '
 {
-    "model": "cl-nagoya/ruri-reranker-large",
+    "model": "cl-nagoya/ruri-v3-reranker-310m",
     "query": "山形県の蔵王温泉にある「泉質」はなに？",
     "documents": [
         "蔵王温泉はどのような特徴を 持つ温泉ですか？",
@@ -97,7 +97,7 @@ $ curl -v http://127.0.0.1:8082/v1/rerank -H 'Content-Type: application/json' --
       "index": 2
     }
   ],
-  "model": "cl-nagoya/ruri-reranker-large",
+  "model": "cl-nagoya/ruri-v3-reranker-310m",
   "usage": {
     "total_tokens": 0
   }
@@ -108,7 +108,7 @@ $ curl -v http://127.0.0.1:8082/v1/rerank -H 'Content-Type: application/json' --
 ### Difyでの設定
 
 - Model Type: Rerank
-- Model Name: cl-nagoya/ruri-reranker-large
+- Model Name: cl-nagoya/ruri-v3-reranker-310m
 - API Key: なし
 - API endpoint URL: http://サーバーのホスト名・IPアドレス:8082/v1
 - Model context size: 512

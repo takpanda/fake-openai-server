@@ -14,7 +14,7 @@ logger: Logger = logging.getLogger("rerank-api-server")
 logger.setLevel(logging.INFO)
 
 app = FastAPI()
-reranker = CrossEncoder("cl-nagoya/ruri-reranker-large")
+reranker = CrossEncoder("cl-nagoya/ruri-v3-reranker-310m")
 
 
 class ReRankRequest(BaseModel):
