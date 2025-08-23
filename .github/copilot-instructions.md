@@ -4,6 +4,8 @@ fake-openai-server is a Python application that provides OpenAI API-compatible T
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
+issueやコメントは日本語を使用する。
+
 ## Working Effectively
 
 ### Bootstrap Dependencies and Build
