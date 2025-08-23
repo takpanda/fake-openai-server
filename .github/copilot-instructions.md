@@ -1,6 +1,6 @@
 # fake-openai-server
 
-fake-openai-server is a Python application that provides OpenAI API-compatible Text embeddings and Rerank services using Japanese language models. It serves two endpoints: Text embeddings (port 8081) using `cl-nagoya/ruri-large` and Rerank (port 8082) using `cl-nagoya/ruri-reranker-large`.
+fake-openai-server is a Python application that provides OpenAI API-compatible Text embeddings and Rerank services using Japanese language models. It serves two endpoints: Text embeddings (port 8081) using `cl-nagoya/ruri-large` and Rerank (port 8082) using `cl-nagoya/ruri-v3-reranker-310m`.
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
@@ -84,7 +84,7 @@ Expected response: JSON with `data` array containing embeddings (768-dimensional
 Test rerank server (port 8082):
 ```bash
 curl -v http://127.0.0.1:8082/v1/rerank -H 'Content-Type: application/json' --data-raw '{
-    "model": "cl-nagoya/ruri-reranker-large",
+    "model": "cl-nagoya/ruri-v3-reranker-310m",
     "query": "質問文",
     "documents": ["文書1", "文書2", "文書3"]
 }'
