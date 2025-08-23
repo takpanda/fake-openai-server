@@ -9,31 +9,6 @@ services:
     networks:
       - fos-net
 
-  embeddings-server:
-    build:
-      context: .
-      dockerfile: ./Docker/embeddings-server/Dockerfile
-    image: fake-openai-server/embeddings-server:latest
-    ports:
-      - 8081:8081/tcp
-    volumes:
-      - ./volumes/hf-cache:/opt/fos/.cache/huggingface
-    networks:
-      - fos-net
-    depends_on:
-      base-server:
-        condition: service_completed_successfully
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 10s
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [ gpu ]
-
   reranker-server:
     build:
       context: .

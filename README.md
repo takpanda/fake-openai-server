@@ -1,20 +1,17 @@
 # fake-open-ai-server
 
-OpenAI API互換のText embeddingsサーバーと、
-Rerankサーバーをローカルで提供します。
+OpenAI API互換のRerankサーバーをローカルで提供します。
 
 [Dify](https://dify.ai/)で日本語の処理をおこないたい際に、
 OpenAI-API-compatibleモデルプロバイダーでこれを指定します。
 
 モデルとしては、次のものを利用しています。
 
-- Text embedding: [cl-nagoya/ruri-large](https://huggingface.co/cl-nagoya/ruri-large)
 - Rerank: [cl-nagoya/ruri-reranker-large](https://huggingface.co/cl-nagoya/ruri-reranker-large)
 
 ## 必要なもの
 
 - [sentence-transformers](https://sbert.net/)が利用できる環境
-  - Text embeddings: GPU VRAM1.5GB程度
   - Rerank: GPU VRAM1.5GB程度
 
 
@@ -47,79 +44,6 @@ $ sudo apt install \
 ```sh
 $ uv sync
 ```
-
-
-## つかいかた(Text embeddings)
-
-### Text embeddingサーバーの起動
-
-```sh
-$ uv run uvicorn embeddings-api-server:app --host 0.0.0.0 --port 8081
-```
-
-Docker Composeの場合は不要です。
-
-
-### Text embeddingサーバーの動作テスト
-
-```sh
-$ curl -v http://127.0.0.1:8081/v1/embeddings -H 'Content-Type: application/json' --data-raw '
-{
-    "model": "cl-nagoya/ruri-large",
-    "input": [
-        "文章: てきとうなテキストだよ。",
-        "文章: てきとうなテキストです。"
-    ]
-}'
-```
-
-```json
-{
-  "object": "list",
-  "data": [
-    {
-      "object": "embedding",
-      "embedding": [
-        0.8186585903167725,
-        -0.47749972343444824,
-        -0.34532251954078674,
-        ...
-        0.15132111310958862,
-        -0.34593141078948975,
-        -0.6007830500602722
-      ],
-      "index": 0
-    },
-    {
-      "object": "embedding",
-      "embedding": [
-        0.958991289138794,
-        -0.322582870721817,
-        -0.35985010862350464,
-        ...
-        0.21222521364688873,
-        -0.33821913599967957,
-        -0.6487450003623962
-      ],
-      "index": 1
-    }
-  ],
-  "model": "cl-nagoya/ruri-large",
-  "usage": {
-    "prompt_tokens": 0,
-    "total_tokens": 0
-  }
-}
-```
-
-
-### Difyでの設定
-
-- Model Type: Text Embedding
-- Model Name: cl-nagoya/ruri-large
-- API Key: なし
-- API endpoint URL: http://サーバーのホスト名・IPアドレス:8081/v1
-- Model context size: 512
 
 
 ## つかいかた(Rerank)
