@@ -21,14 +21,14 @@ jobs:
         
       # 1. base-serverイメージをビルドしてpush
       - name: Build base-server image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/base-server:latest -f base-server/Dockerfile .
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/base-server:latest -f Docker/base-server/Dockerfile .
 
       - name: Push base-server image
         run: docker push ghcr.io/${{ github.repository_owner }}/base-server:latest
 
       # 2. fake-openai-serverイメージをビルドしてpush
       - name: Build fake-openai-server image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest -f Dockerfile .
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest -f Docker/reranker-server/Dockerfile .
 
       - name: Push fake-openai-server image
         run: docker push ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest
