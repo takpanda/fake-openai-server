@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04 AS builder
+FROM nvidia/cuda:13.0.0-cudnn-runtime-ubuntu24.04 AS builder
 
 ARG FOS_USER_ID=fos
 ARG FOS_USER_DIR=/opt/fos
@@ -39,7 +39,7 @@ RUN --mount=type=cache,target=${FOS_USER_DIR}/.cache,uid=1001,gid=1001 \
 #-----------
 # Reranker Server
 #-----------
-FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04
+FROM nvidia/cuda:13.0.0-cudnn-runtime-ubuntu24.04
 
 ARG FOS_USER_ID=fos
 ARG FOS_USER_DIR=/opt/fos
