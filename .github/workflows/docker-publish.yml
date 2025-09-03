@@ -19,14 +19,7 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
         
-      # 1. base-serverイメージをビルドしてpush
-      - name: Build base-server image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/base-server:latest -f Docker/base-server/Dockerfile .
-
-      - name: Push base-server image
-        run: docker push ghcr.io/${{ github.repository_owner }}/base-server:latest
-
-      # 2. fake-openai-serverイメージをビルドしてpush
+      # fake-openai-serverイメージをビルドしてpush
       - name: Build fake-openai-server image
         run: docker build -t ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest -f Docker/reranker-server/Dockerfile .
 
