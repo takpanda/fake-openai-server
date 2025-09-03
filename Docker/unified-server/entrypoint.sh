@@ -2,6 +2,9 @@
 
 set -e
 
+# Activate virtual environment
+source /opt/fos/.venv/bin/activate
+
 # Default values
 SERVICE_TYPE=${SERVICE_TYPE:-reranker}
 HOST=${HOST:-0.0.0.0}
@@ -9,13 +12,13 @@ HOST=${HOST:-0.0.0.0}
 # Function to start embeddings server
 start_embeddings() {
     echo "Starting embeddings server on port 8081..."
-    exec uv run uvicorn embeddings-api-server:app --host ${HOST} --port 8081
+    exec uvicorn embeddings-api-server:app --host ${HOST} --port 8081
 }
 
 # Function to start reranker server
 start_reranker() {
     echo "Starting reranker server on port 8082..."
-    exec uv run uvicorn reranker-api-server:app --host ${HOST} --port 8082
+    exec uvicorn reranker-api-server:app --host ${HOST} --port 8082
 }
 
 # Function to show usage

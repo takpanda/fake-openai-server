@@ -1,3 +1,7 @@
+# DEPRECATED: This Dockerfile is deprecated. 
+# Please use Docker/unified-server/Dockerfile for the new unified approach.
+# See README.md for migration instructions.
+
 FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04 AS builder
 
 ARG FOS_USER_ID=fos
