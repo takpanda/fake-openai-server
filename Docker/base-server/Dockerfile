@@ -1,7 +1,3 @@
-# DEPRECATED: This Dockerfile is deprecated. 
-# Please use Docker/unified-server/Dockerfile for the new unified approach.
-# See README.md for migration instructions.
-
 FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04 AS builder
 
 ARG FOS_USER_ID=fos
@@ -27,9 +23,7 @@ RUN useradd -u 1001 -s /bin/bash -d ${FOS_USER_DIR} ${FOS_USER_ID} && \
 
 WORKDIR ${FOS_USER_DIR}
 USER ${FOS_USER_ID}
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && \
-    id && pwd && echo ${FOS_USER_ID}
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && id && pwd && echo ${FOS_USER_ID}
 
 COPY --chown=${FOS_USER_ID}:${FOS_USER_ID} \
     ./pyproject.toml \
@@ -39,7 +33,7 @@ COPY --chown=${FOS_USER_ID}:${FOS_USER_ID} \
     ${FOS_USER_DIR}/
 
 RUN --mount=type=cache,target=${FOS_USER_DIR}/.cache,uid=1001,gid=1001 \
-    . ~/.bashrc && uv sync
+    uv sync
 
 
 #-----------

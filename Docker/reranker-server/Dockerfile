@@ -1,7 +1,3 @@
-# DEPRECATED: This Dockerfile is deprecated.
-# Please use Docker/unified-server/Dockerfile for the new unified approach.  
-# See README.md for migration instructions.
-
 FROM fake-openai-server/base-server:latest
 
 COPY --chown=fos:fos \
