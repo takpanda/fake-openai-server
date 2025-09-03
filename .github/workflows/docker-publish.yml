@@ -2,13 +2,8 @@ name: Publish Docker image
 
 on:
   push:
-    branches: [ main, 'release/*' ]
-  release:
-    types: [ published ]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+    branches:
+      - main
 
 jobs:
   build-and-push:
@@ -18,29 +13,24 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      # GitHub Container Registryへログイン
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=ref,event=branch
-            type=ref,event=tag
-            type=sha
+      # Docker Composeでイメージビルド
+      - name: Build images
+        run: docker compose -f compose.yaml build
 
-      - id: build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./Docker/reranker-server/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      # イメージにタグ付与（ghcr.io/OWNER/イメージ名:latest）
+      - name: Tag images
+        run: |
+          docker tag base-server ghcr.io/${{ github.repository_owner }}/base-server:latest
+          docker tag fake-openai-server ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest
+
+      # イメージをGitHub Container Registryにpush
+      - name: Push images to GitHub Container Registry
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/base-server:latest
+          docker push ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest
