@@ -1,14 +1,4 @@
 services:
-  base-server:
-    build:
-      context: .
-      dockerfile: ./Docker/base-server/Dockerfile
-    image: fake-openai-server/base-server:latest
-    volumes:
-      - ./volumes/hf-cache:/opt/fos/.cache/huggingface
-    networks:
-      - fos-net
-
   reranker-server:
     build:
       context: .
@@ -20,9 +10,6 @@ services:
       - ./volumes/hf-cache:/opt/fos/.cache/huggingface
     networks:
       - fos-net
-    depends_on:
-      base-server:
-        condition: service_completed_successfully
     deploy:
       restart_policy:
         condition: any
