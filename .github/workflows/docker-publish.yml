@@ -19,18 +19,16 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # Docker Composeでイメージビルド
-      - name: Build images
-        run: docker compose -f compose.yaml build
+     # 1. base-serverイメージをビルドしてpush
+     - name: Build base-server image
+       run: docker build -t ghcr.io/${{ github.repository_owner }}/base-server:latest -f base-server/Dockerfile .
 
-      # イメージにタグ付与（ghcr.io/OWNER/イメージ名:latest）
-      - name: Tag images
-        run: |
-          docker tag base-server ghcr.io/${{ github.repository_owner }}/base-server:latest
-          docker tag fake-openai-server ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest
+     - name: Push base-server image
+       run: docker push ghcr.io/${{ github.repository_owner }}/base-server:latest
 
-      # イメージをGitHub Container Registryにpush
-      - name: Push images to GitHub Container Registry
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/base-server:latest
-          docker push ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest
+    # 2. fake-openai-serverイメージをビルドしてpush
+    - name: Build fake-openai-server image
+       run: docker build -t ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest -f Dockerfile .
+
+    - name: Push fake-openai-server image
+       run: docker push ghcr.io/${{ github.repository_owner }}/fake-openai-server:latest
